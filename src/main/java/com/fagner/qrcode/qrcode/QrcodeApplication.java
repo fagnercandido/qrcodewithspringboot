@@ -11,14 +11,7 @@ import java.awt.image.BufferedImage;
 
 @SpringBootApplication
 public class QrcodeApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(QrcodeApplication.class, args);
 	}
-
-	@Bean
-	public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
-	    return new BufferedImageHttpMessageConverter();
-	}
-
 }
