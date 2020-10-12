@@ -1,5 +1,6 @@
 package com.fagner.qrcode.qrcode.controller;
 
+import com.fagner.qrcode.qrcode.service.QRCodeService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
@@ -21,19 +22,14 @@ import java.awt.image.BufferedImage;
 @RestController
 @RequestMapping("qrcode")
 public class QRCodeController {
-    
+    private final QRCodeService qrCodeService;
+
+    public QRCodeController(QRCodeService qrCodeService){
+        this.qrCodeService = qrCodeService;
+    }
 
     @GetMapping(value = "/1/{name}", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<BufferedImage> barbecueEAN13Barcode(@PathVariable("name") String name) throws Exception {
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-	    BitMatrix bitMatrix = qrCodeWriter.encode(name, BarcodeFormat.QR_CODE, 200, 200);
-        
-	    return okResponse(MatrixToImageWriter.toBufferedImage(bitMatrix));
+        return ResponseEntity.ok(qrCodeService.generateQRCode(name));
     }
-
-    private ResponseEntity<BufferedImage> okResponse(BufferedImage image) {
-        return new ResponseEntity<>(image, HttpStatus.OK);
-    }
-    
-
 }
